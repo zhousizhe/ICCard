@@ -1,0 +1,76 @@
+from PyQt5.QtWidgets import QTableWidget, QLineEdit, QComboBox, QAbstractItemView, QTableWidgetItem
+
+from UI import DButil
+
+
+def modify_branch(self):
+    table = self.form6.findChild(QTableWidget, 'tableWidget')
+
+
+
+
+
+
+    '''
+    网点信息管理
+    搜索网点
+    '''
+def serach_branch(self):
+    lineEdit = self.form6.findChild(QLineEdit, 'lineEdit')
+    branchName = lineEdit.text()
+    comBox = self.form6.findChild(QComboBox, 'comboBox')
+    provinces = comBox.currentText()
+    comBox_2 = self.form6.findChild(QComboBox, 'comboBox_2')
+    citys = comBox_2.currentText()
+    comBox_3 = self.form6.findChild(QComboBox, 'comboBox_3')
+    districts = comBox_3.currentText()
+    branchInformationSql = "SELECT id, branch_no, name, telephone, person, province, city, district, description FROM t_iccard_branch WHERE 1=1 and deleted = 0"
+    paralist = []
+    branchName = '%' + branchName + '%'
+    if provinces != '请选择':
+        branchInformationSql = branchInformationSql + " and province='%s'"
+        paralist.append(provinces)
+
+    if citys != '请选择':
+        branchInformationSql = branchInformationSql + " and city='%s'"
+        paralist.append(citys)
+
+    if districts != '请选择' and districts != '':
+        branchInformationSql = branchInformationSql + " and district='%s'"
+        paralist.append(districts)
+
+    if branchName != '' and branchName != '%%':
+        branchInformationSql = branchInformationSql + " and description like '%s'"
+        paralist.append(branchName)
+
+    if len(paralist) > 1:
+        branchInformationSql = branchInformationSql % tuple(paralist)
+    elif len(paralist) > 0:
+        branchInformationSql = branchInformationSql % paralist[0]
+
+    branchInformationSqlResult = DButil.conn_excu_sql(branchInformationSql)
+    cur = branchInformationSqlResult[0]
+    conn = branchInformationSqlResult[1]
+    result = cur.fetchall()
+    cur.close()
+    conn.close()
+    table = self.form6.findChild(QTableWidget, 'tableWidget')
+    rows = result
+    row = len(result)  # 取得记录个数，用于设置表格的行数
+    if row < 1:
+        table.clearContents()
+        return
+    vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+    table.setRowCount(row)
+    table.setColumnCount(vol)
+    # table = QtWidgets.QTableWidget
+    # 初始化加载页面时表格内容不可修改
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+    for i in range(row):
+        for j in range(vol):
+            temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+            if temp_data is None:
+                temp_data = ""
+            data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+            table.setItem(i, j, data)

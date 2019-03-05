@@ -1,0 +1,92 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'assistant_update_password.ui'
+#
+# Created by: PyQt5 UI code generator 5.11.3
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Assistant_Upassword_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(1068, 829)
+        self.label_19 = QtWidgets.QLabel(Form)
+        self.label_19.setGeometry(QtCore.QRect(400, 230, 231, 31))
+        self.label_19.setObjectName("label_19")
+        self.textEdit = QtWidgets.QTextEdit(Form)
+        self.textEdit.setGeometry(QtCore.QRect(140, 130, 241, 31))
+        self.textEdit.setObjectName("textEdit")
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setGeometry(QtCore.QRect(40, 230, 72, 31))
+        self.label_5.setObjectName("label_5")
+        self.textBrowser = QtWidgets.QTextBrowser(Form)
+        self.textBrowser.setGeometry(QtCore.QRect(140, 30, 241, 31))
+        self.textBrowser.setObjectName("textBrowser")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(40, 30, 72, 31))
+        self.label.setObjectName("label")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(40, 180, 81, 31))
+        self.label_4.setObjectName("label_4")
+        self.label_18 = QtWidgets.QLabel(Form)
+        self.label_18.setGeometry(QtCore.QRect(400, 130, 231, 31))
+        self.label_18.setObjectName("label_18")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setGeometry(QtCore.QRect(40, 130, 72, 31))
+        self.label_3.setObjectName("label_3")
+        self.textBrowser_2 = QtWidgets.QTextBrowser(Form)
+        self.textBrowser_2.setGeometry(QtCore.QRect(140, 80, 241, 31))
+        self.textBrowser_2.setObjectName("textBrowser_2")
+        self.textEdit_3 = QtWidgets.QTextEdit(Form)
+        self.textEdit_3.setGeometry(QtCore.QRect(140, 230, 241, 31))
+        self.textEdit_3.setObjectName("textEdit_3")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(40, 80, 91, 31))
+        self.label_2.setObjectName("label_2")
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(440, 350, 101, 31))
+        self.pushButton.setObjectName("pushButton")
+        self.textEdit_2 = QtWidgets.QTextEdit(Form)
+        self.textEdit_2.setGeometry(QtCore.QRect(140, 180, 241, 31))
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.label_20 = QtWidgets.QLabel(Form)
+        self.label_20.setGeometry(QtCore.QRect(400, 180, 231, 31))
+        self.label_20.setObjectName("label_20")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "营业员密码修改"))
+        self.label_19.setText(_translate("Form", "6-24位数字或字母"))
+        self.label_5.setText(_translate("Form", "确认密码:"))
+        self.textBrowser.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.label.setText(_translate("Form", "用户编号:"))
+        self.label_4.setText(_translate("Form", "新密码:"))
+        self.label_18.setText(_translate("Form", "6-24位数字或字母"))
+        self.label_3.setText(_translate("Form", "原密码:"))
+        self.textBrowser_2.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
+        self.label_2.setText(_translate("Form", "用户名:"))
+        self.pushButton.setText(_translate("Form", "保存"))
+        self.label_20.setText(_translate("Form", "6-24位数字或字母"))
+
+if __name__=="__main__":
+    import sys
+    app=QtWidgets.QApplication(sys.argv)
+    widget=QtWidgets.QWidget()
+    ui=Assistant_Upassword_Form()
+    ui.setupUi(widget)
+    # widget.setWindowIcon(QIcon('web.png'))#增加icon图标，如果没有图片可以没有这句
+    widget.show()
+    sys.exit(app.exec_())

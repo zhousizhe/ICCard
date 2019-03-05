@@ -1,0 +1,35 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'Top.ui'
+#
+# Created by: PyQt5 UI code generator 5.10.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+import tkinter as tk
+
+class Top_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        # Form.resize(1024, 50)
+        self.quit = QtWidgets.QPushButton(Form)
+        self.quit.setGeometry(QtCore.QRect(tk.Tk().winfo_screenwidth()*0.75-130, 5, 40, 40))
+        self.quit.setObjectName("quit")
+        self.cancel = QtWidgets.QPushButton(Form)
+        self.cancel.setGeometry(QtCore.QRect(tk.Tk().winfo_screenwidth()*0.75-80, 5, 40, 40))
+        self.cancel.setObjectName("cancel")
+
+        # 背景图片暂不添加
+        window_pale = QtGui.QPalette()
+        window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("./logo.png")))
+        self.setPalette(window_pale)
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.quit.setText(_translate("Form", "退出"))
+        self.cancel.setText(_translate("Form", "注销"))
+

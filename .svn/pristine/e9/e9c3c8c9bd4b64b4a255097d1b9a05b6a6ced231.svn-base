@@ -1,0 +1,582 @@
+# coding=utf-8
+import random
+import sys
+import tkinter as tk
+
+import pymysql
+from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from UI import cardController, cacheUtil, rechargeController, manageInformationsController, manageICCardController, \
+    rechargeSearchController, assistantInformationsController, assistantInsertController, manageCreateController, \
+    assistantUpdateController
+from UI.assistant_information import Assistant_Information_Form
+from UI.assistant_insert import Assistant_insert_Form
+from UI.assistant_update_password import Assistant_Upassword_Form
+from UI.card import Card_Form
+from UI.create_brancch import Create_Brancch_Form
+from UI.manageICCard import ManageICCard_Form
+from UI.manage_informations import Manage_Informations_Form
+from UI.recharge import Recharge_Form
+from cacheout import Cache
+
+from UI.rechargeSearch import rechargeSearch_Form
+
+
+class Ui_Form_Tree_View(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        hbox = QHBoxLayout(self)
+        # top = QFrame(self)
+        # 限制最大宽度
+        # top.setMaximumSize(tk.Tk().winfo_screenwidth()*0.1, tk.Tk().winfo_screenheight()*0.1)
+        # top.setFrameShape(QFrame.StyledPanel)
+        left = QFrame(self)
+        # left.setFrameShape(QFrame.StyledPanel)
+        right = QFrame(self)
+        # right.setFrameShape(QFrame.StyledPanel)
+        # splitter = QSplitter(Qt.Vertical)
+        # splitter.addWidget(top)
+        splitter1 = QSplitter(Qt.Horizontal)
+        splitter1.addWidget(left)
+        splitter1.setSizes([25, ])  # 设置分隔条位置
+        splitter1.addWidget(right)
+        # splitter.setSizes([20, ])  # 设置分隔条位置
+        # splitter.addWidget(splitter1)
+        # hbox.addWidget(splitter)
+        hbox.addWidget(splitter1)
+        self.setLayout(hbox)
+
+        # 树
+        self.tree = QTreeWidget(left)
+        # self.tree.setStyleSheet("background-color:#eeeeee;border:outset;color:#215b63;")
+        self.tree.setAutoScroll(True)
+        self.tree.setEditTriggers(QAbstractItemView.DoubleClicked | QAbstractItemView.EditKeyPressed)
+        self.tree.setTextElideMode(Qt.ElideMiddle)
+        #self.tree.setIndentation(30)
+        self.tree.setRootIsDecorated(True)
+        self.tree.setUniformRowHeights(False)
+        self.tree.setItemsExpandable(True)
+        self.tree.setAnimated(False)
+        self.tree.setHeaderHidden(True)
+        self.tree.setExpandsOnDoubleClick(True)
+        self.tree.setObjectName("tree")
+        self.tree.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight())
+
+        # 设置根节点
+        root = QTreeWidgetItem(self.tree)
+        root.setText(0, 'IC卡')
+        # 设置树形控件的列的宽度
+        self.tree.setColumnWidth(0, 150)
+        # 设置子节点1
+        child1 = QTreeWidgetItem()
+        child1.setText(0, '办卡')
+        root.addChild(child1)
+        # 设置子节点2
+        child2 = QTreeWidgetItem(root)
+        child2.setText(0, '充值')
+        # 设置子节点3
+        child3 = QTreeWidgetItem(root)
+        child3.setText(0, 'IC卡信息管理')
+        # 设置子节点4
+        child4 = QTreeWidgetItem(root)
+        child4.setText(0, '充值信息查询')
+        # 跟节点1
+        root = QTreeWidgetItem(self.tree)
+        root.setText(0, '网点')
+        # 设置子节点1
+        child1 = QTreeWidgetItem()
+        child1.setText(0, '创建网点')
+        root.addChild(child1)
+        # 设置子节点2
+        child2 = QTreeWidgetItem(root)
+        child2.setText(0, '网点信息管理')
+        # 跟节点2
+        root = QTreeWidgetItem(self.tree)
+        root.setText(0, '营业员')
+        # 设置子节点1
+        child1 = QTreeWidgetItem()
+        child1.setText(0, '添加营业员')
+        root.addChild(child1)
+        # 设置子节点2
+        child2 = QTreeWidgetItem(root)
+        child2.setText(0, '营业员信息管理')
+        # 设置子节点2
+        child3 = QTreeWidgetItem(root)
+        child3.setText(0, '营业员密码修改')
+        # 加载根节点的所有属性与子控件
+        self.tree.addTopLevelItem(root)
+        # 设置stackedWidget
+        self.stackedWidget = QStackedWidget(right)
+        self.stackedWidget.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight())
+
+
+        # 设置第一个面板
+        widget = QtWidgets.QWidget()
+        ui = Card_Form()
+        ui.setupUi(widget)
+        ui.pushButton.clicked.connect(lambda: cardController.submit(self))
+        # widget.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight()*2)
+        # self.scroll = QScrollArea()
+        # self.scroll.setWidget(widget)
+        # self.form1 = self.scroll
+        self.form1 = widget
+        # cardController.pushInput(self)
+
+
+        # 设置第二个面板
+        widget = QtWidgets.QWidget()
+        ui = Recharge_Form()
+        ui.setupUi(widget)
+        ui.pushButton.clicked.connect(lambda: rechargeController.submit(self))
+        # widget.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight() * 2)
+        # self.scroll = QScrollArea()
+        # self.scroll.setWidget(widget)
+        # self.form2 = self.scroll
+        self.form2 = widget
+
+        # 设置第三个面板
+        widget = QtWidgets.QWidget()
+        ui = ManageICCard_Form()
+        ui.setupUi(widget)
+        ui.search.clicked.connect(lambda: manageICCardController.iniquery(self))  # 搜索
+        ui.cardPin.clicked.connect(lambda: manageICCardController.cardPin(self))  # 销卡
+        ui.transfer.clicked.connect(lambda: manageICCardController.transfer(self))  # 过户
+        ui.removeException.clicked.connect(lambda: manageICCardController.removeException(self))  # 解除异常
+        # ui = ()
+        # ui.setupUi(widget)
+        # self.scroll = QScrollArea()
+        # self.scroll.setWidget(widget)
+        self.form3 = widget
+
+        # 设置第四个面板
+        widget = QtWidgets.QWidget()
+        ui = rechargeSearch_Form()
+        ui.setupUi(widget)
+        ui.search.clicked.connect(lambda: rechargeSearchController.iniquery(self))
+        # ui = Card_Form()
+        # ui.setupUi(widget)
+        self.form4 = widget
+
+        # 设置第五个面板
+        widget = QtWidgets.QWidget()
+        ui = Create_Brancch_Form()
+        ui.setupUi(widget)
+        ui.pushButton_3.clicked.connect(lambda: manageCreateController.save_click(self))
+        ui.pushButton_2.clicked.connect(lambda: manageCreateController.refush(self))
+        ui.comboBox_3.currentIndexChanged.connect(self.province_clicked)
+        ui.comboBox_2.currentIndexChanged.connect(self.city_cilcked)
+        self.form5 = widget
+        self.loading_branch()
+        self.loading_province()
+
+        # 设置第六个面板
+        widget = QtWidgets.QWidget()
+        ui = Manage_Informations_Form()
+        ui.setupUi(widget)
+        ui.comboBox.currentIndexChanged.connect(self.comboBox_clicked)
+        ui.comboBox_2.currentIndexChanged.connect(self.combox2_clicked)
+        ui.pushButton_5.clicked.connect(lambda: manageInformationsController.serach_branch(self))
+        ui.pushButton_4.clicked.connect(lambda: manageInformationsController.modify_branch(self))
+        # widget.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight() * 2)
+        # self.scroll = QScrollArea()
+        # self.scroll.setWidget(widget)
+        # self.form6 = self.scroll
+        self.form6 = widget
+        self.loading()
+
+
+        # 设置第七个面板
+        widget = QtWidgets.QWidget()
+        ui = Assistant_insert_Form()
+        ui.setupUi(widget)
+        ui.pushButton.clicked.connect(lambda: assistantInsertController.save_click(self))
+        ui.pushButton_2.clicked.connect(lambda: assistantInsertController.refush(self))
+        # widget.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight() * 2)
+        # self.scroll = QScrollArea()
+        # self.scroll.setWidget(widget)
+        # self.form7 = self.scroll
+        self.form7 = widget
+
+        # 设置第八个面板
+        widget = QtWidgets.QWidget()
+        ui = Assistant_Information_Form()
+        ui.setupUi(widget)
+        ui.pushButton_5.clicked.connect(lambda: assistantInformationsController.serach_assistant(self))
+        # widget.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight() * 2)
+        # self.scroll = QScrollArea()
+        # self.scroll.setWidget(widget)
+        # self.form8 = self.scroll
+        self.form8 = widget
+        self.loading_assistant()
+
+        # 设置第九个面板
+        widget = QtWidgets.QWidget()
+        ui = Assistant_Upassword_Form()
+        ui.setupUi(widget)
+        ui.pushButton.clicked.connect(lambda: assistantUpdateController.updatePassword(self))
+        # widget.setMinimumSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight() * 2)
+        # self.scroll = QScrollArea()
+        # self.scroll.setWidget(widget)
+        # self.form9 = self.scroll
+        self.form9 = widget
+
+        # 将面板，加入stackedWidget
+        self.stackedWidget.addWidget(self.form1)
+        self.stackedWidget.addWidget(self.form2)
+        self.stackedWidget.addWidget(self.form3)
+        self.stackedWidget.addWidget(self.form4)
+        self.stackedWidget.addWidget(self.form5)
+        self.stackedWidget.addWidget(self.form6)
+        self.stackedWidget.addWidget(self.form7)
+        self.stackedWidget.addWidget(self.form8)
+        self.stackedWidget.addWidget(self.form9)
+
+        # 树节点监听事件
+        self.tree.clicked.connect(self.onClicked)
+
+
+        # 窗口最大化
+        self.showMaximized()
+        self.setFixedSize(tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight())
+        self.setWindowTitle('电动车充点卡管理系统')
+        self.show()
+
+
+        # # 窗口初始化
+        # self.setWindowTitle('电动车充点卡管理系统')
+        # self.resize(800, 600)
+        # self.setMinimumWidth(800)
+        # self.setMinimumHeight(600)
+        # self.show()
+
+    def onClicked(self,qmodeLindex):
+        item=self.tree.currentItem()
+        # print('Key=%s,value=%s'%(item.text(0),item.text(1)))
+        itemName = item.text(0)
+        if itemName == "办卡":
+            self.on_pushButton1_clicked()
+        elif itemName == "充值":
+            self.on_pushButton2_clicked()
+        elif itemName == "IC卡信息管理":
+            self.on_pushButton3_clicked()
+        elif itemName == "充值信息查询":
+            self.on_pushButton4_clicked()
+        elif itemName == "创建网点":
+            self.on_pushButton5_clicked()
+        elif itemName == "网点信息管理":
+            self.on_pushButton6_clicked()
+        elif itemName == "添加营业员":
+            self.on_pushButton7_clicked()
+        elif itemName == "营业员信息管理":
+            self.on_pushButton8_clicked()
+        elif itemName == "营业员密码修改":
+            self.on_pushButton9_clicked()
+        else:
+            print('返回主界面')
+
+
+    # 按钮一：打开第一个面板
+    def on_pushButton1_clicked(self):
+        # cardController.pushInput(self)
+        self.stackedWidget.setCurrentIndex(0)
+
+    # 按钮二：打开第二个面板
+    def on_pushButton2_clicked(self):
+        rechargeController.pushInput(self)
+        self.stackedWidget.setCurrentIndex(1)
+
+    # 按钮三：打开第三个面板
+    def on_pushButton3_clicked(self):
+        manageICCardController.iniquery(self)
+        manageICCardController.queryOpenBranchName(self)
+        self.stackedWidget.setCurrentIndex(2)
+
+    # 按钮四：打开第四个面板
+    def on_pushButton4_clicked(self):
+        rechargeSearchController.iniquery(self)
+        rechargeSearchController.queryOpenBranchName(self)
+        self.stackedWidget.setCurrentIndex(3)
+
+    # 按钮五：打开第五个面板
+    def on_pushButton5_clicked(self):
+        self.stackedWidget.setCurrentIndex(4)
+
+    # 按钮六：打开第六个面板
+    def on_pushButton6_clicked(self):
+        self.stackedWidget.setCurrentIndex(5)
+
+    # 按钮七：打开第七个面板
+    def on_pushButton7_clicked(self):
+        self.stackedWidget.setCurrentIndex(6)
+
+    # 按钮八：打开第八个面板
+    def on_pushButton8_clicked(self):
+        self.stackedWidget.setCurrentIndex(7)
+
+    # 按钮九：打开第九个面板
+    def on_pushButton9_clicked(self):
+        self.stackedWidget.setCurrentIndex(8)
+
+    def closeEvent(self, event):
+        """
+        重写closeEvent方法，实现dialog窗体关闭时执行一些代码
+        :param event: close()触发的事件
+        :return: None
+        """
+        reply = QtWidgets.QMessageBox.question(self,
+                                               '本程序',
+                                               "是否要退出程序？",
+                                               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                               QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            event.accept()
+            cacheUtil.deleteCash("uid")
+            from UI.main import Module_User_Login
+            self.dia=Module_User_Login()
+            self.dia.show()
+        else:
+            event.ignore()
+
+
+    '''
+    创建网点
+    加载所属运营商数据
+    '''
+    def loading_branch(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+
+        comboBox = self.form5.findChild(QComboBox, 'comboBox')
+        cur.execute("SELECT NAME FROM t_user_operator")
+        operators = []
+        for operator in cur:
+            operators.append(str(operator[0]))
+        comboBox.addItems(operators)
+        cur.close()
+        conn.close()
+
+    '''
+    创建网点
+    加载省份相关信息    
+    '''
+    def loading_province(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        comboBox_3 = self.form5.findChild(QComboBox, 'comboBox_3')
+        cur.execute("SELECT NAME,CODE FROM d_area WHERE parent = 0")
+        provinces = []
+        self.codes = []
+
+        for province in cur:
+            provinces.append(str(province[0]))
+            self.codes.append(str(province[1]))
+        comboBox_3.addItems(provinces)
+        cur.close()
+        conn.close()
+
+    '''
+    创建网点
+    点击省份 触发事件
+    加载出相应的市
+    '''
+    def province_clicked(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        comboBox_3 = self.form5.findChild(QComboBox, 'comboBox_3')
+        comboBox_2 = self.form5.findChild(QComboBox, 'comboBox_2')
+        comboBox_2.clear()
+        provinceIndex = comboBox_3.currentIndex()
+
+        code = self.codes[provinceIndex - 1]
+        self.citycodes = []
+        citys = []
+        # print(code)
+        cur.execute("SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % code)
+        for city in cur:
+            citys.append(str(city[0]))
+            self.citycodes.append(str(city[1]))
+
+        comboBox_2.addItems(citys)
+        cur.close()
+        conn.close()
+
+    '''
+    创建网点
+    点击市 触发事件
+    加载相应的区
+    '''
+    def city_cilcked(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+
+        comboBox_2 = self.form5.findChild(QComboBox, 'comboBox_2')
+        comboBox_4 = self.form5.findChild(QComboBox, 'comboBox_4')
+        comboBox_4.clear()
+        cityIndex = comboBox_2.currentIndex()
+        if cityIndex == -1:
+            return
+        cur.execute("SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % self.citycodes[cityIndex])
+
+        districts = []
+        for district in cur:
+            districts.append(str(district[0]))
+        comboBox_4.addItems(districts)
+        # print(district)
+        cur.close()
+        conn.close()
+
+    '''
+    营业员信息管理
+    加载页面
+    '''
+    def loading_assistant(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        table = self.form8.findChild(QTableWidget, 'tableWidget')
+
+        cur.execute("SELECT user_id, operator_id, user_name, real_name, id_number, role_id, phone, branch_no, branch_name FROM t_user_base WHERE deleted = 0")
+        rows = cur.fetchall()
+        row = cur.rowcount  # 取得记录个数，用于设置表格的行数
+        vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+        table.setRowCount(row)
+        table.setColumnCount(vol)
+        # table = QtWidgets.QTableWidget
+        # 初始化加载页面时表格内容不可修改
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+        for i in range(row):
+            for j in range(vol):
+                # print(j)
+                temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+                if temp_data is None:
+                    temp_data = ""
+                data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+                table.setItem(i, j, data)
+
+        cur.close()
+        conn.close()
+
+
+
+    '''
+    网点信息管理 加载页面
+    '''
+    def loading(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        table = self.form6.findChild(QTableWidget, 'tableWidget')
+
+        cur.execute("SELECT id, branch_no, name, telephone, person, province, city, district, description FROM t_iccard_branch WHERE deleted = 0")
+        self.province()
+        rows = cur.fetchall()
+        row = cur.rowcount  # 取得记录个数，用于设置表格的行数
+        vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+        table.setRowCount(row)
+        table.setColumnCount(vol)
+        #table = QtWidgets.QTableWidget
+        # 初始化加载页面时表格内容不可修改
+        table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+        for i in range(row):
+            for j in range(vol):
+                # print(j)
+                temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+                if temp_data is None:
+                    temp_data = ""
+                data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+                table.setItem(i, j, data)
+
+        cur.close()
+        conn.close()
+
+
+
+    '''
+    网点信息管理
+    加载省份数据
+    '''
+    def province(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        combox = self.form6.findChild(QComboBox, 'comboBox')
+        cur.execute("SELECT NAME,CODE FROM d_area WHERE parent = 0")
+        provinces = []
+        self.codes = []
+
+        # combox.addItems(["2", "3", "3", "3"])
+        for province in cur:
+            provinces.append(str(province[0]))
+            self.codes.append(str(province[1]))
+        combox.addItems(provinces)
+        cur.close()
+        conn.close()
+
+    '''
+    网点信息管理
+    点击省份 触发事件
+    加载相对应的市
+    '''
+    def comboBox_clicked(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        combox = self.form6.findChild(QComboBox, 'comboBox')
+        comboBox_2 = self.form6.findChild(QComboBox, 'comboBox_2')
+        comboBox_2.clear()
+        provinceIndex = combox.currentIndex()
+        if provinceIndex == -1:
+            return
+        code = self.codes[provinceIndex-1]
+        self.citycodes = []
+        citys = []
+        # print(code)
+        cur.execute("SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % code)
+        for city in cur:
+            citys.append(str(city[0]))
+            self.citycodes.append(str(city[1]))
+
+        comboBox_2.addItems(citys)
+
+        cur.close()
+        conn.close()
+
+    def combox2_clicked(self):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        print("=========================================")
+        comboBox_2 = self.form6.findChild(QComboBox, 'comboBox_2')
+        comboBox_3 = self.form6.findChild(QComboBox, 'comboBox_3')
+        comboBox_3.clear()
+        cityIndex = comboBox_2.currentIndex()
+        if cityIndex == -1:
+            return
+        # citycode = self.citycodes[cityIndex]
+        cur.execute("SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % self.citycodes[cityIndex])
+
+        districts = []
+        for district in cur:
+            districts.append(str(district[0]))
+        comboBox_3.addItems(districts)
+        # print(district)
+        cur.close()
+        conn.close()
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Ui_Form_Tree_View()
+    sys.exit(app.exec_())

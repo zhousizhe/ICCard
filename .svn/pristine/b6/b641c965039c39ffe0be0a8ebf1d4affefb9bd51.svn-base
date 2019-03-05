@@ -1,0 +1,45 @@
+﻿#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+import tkinter as tk
+import pymysql
+from PyQt5 import QtWidgets
+
+
+def get_screen_size(window):
+    return window.winfo_screenwidth(),window.winfo_screenheight()
+ 
+def get_window_size(window):
+    return window.winfo_reqwidth(),window.winfo_reqheight()
+ 
+def center_window(root, width, height):
+    screenwidth = root.winfo_screenwidth()
+    screenheight = root.winfo_screenheight()
+    size = '%dx%d+%d+%d' % (width, height, (screenwidth - width)/2, (screenheight - height)/2)
+    print(size)
+    root.geometry(size)
+
+def tree_draw(root):
+    tree=QtWidgets.QTreeWidget(root)
+
+def connection_db():
+    conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+    cur = conn.cursor()
+    print(cur)
+    cur.execute("SELECT * FROM t_user_base")
+    # result=cur.fetchall()
+    for r in cur:
+        print(r[1])
+    cur.close()
+    conn.close()
+
+
+root = tk.Tk()
+root.title('测试窗口')
+center_window(root, 800, 600)
+root.maxsize(root.winfo_screenwidth(), root.winfo_screenheight())
+root.minsize(800, 600)
+# ttk.Label(root, relief = tk.FLAT, text = '这是生成的啊啊啊啊啊，\n屏幕大小(%sx%s)\n窗口大小(%sx%s)' % (get_screen_size(root) + get_window_size(root))).pack(expand = tk.YES)
+# connection_db()
+tk.mainloop()
+
+

@@ -1,0 +1,99 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'assistant_information.ui'
+#
+# Created by: PyQt5 UI code generator 5.11.3
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Assistant_Information_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(1024, 768)
+        self.pushButton_10 = QtWidgets.QPushButton(Form)
+        self.pushButton_10.setGeometry(QtCore.QRect(870, 210, 141, 28))
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.pushButton_4 = QtWidgets.QPushButton(Form)
+        self.pushButton_4.setGeometry(QtCore.QRect(270, 130, 171, 28))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setGeometry(QtCore.QRect(390, 40, 81, 25))
+        self.label_3.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName("label_3")
+        self.pushButton_8 = QtWidgets.QPushButton(Form)
+        self.pushButton_8.setGeometry(QtCore.QRect(560, 210, 191, 28))
+        self.pushButton_8.setObjectName("pushButton_8")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(750, 40, 81, 25))
+        self.label_4.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_4.setObjectName("label_4")
+        self.pushButton_6 = QtWidgets.QPushButton(Form)
+        self.pushButton_6.setGeometry(QtCore.QRect(250, 210, 171, 28))
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(30, 40, 91, 25))
+        self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label.setObjectName("label")
+        self.pushButton_9 = QtWidgets.QPushButton(Form)
+        self.pushButton_9.setGeometry(QtCore.QRect(750, 210, 121, 28))
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.pushButton_5 = QtWidgets.QPushButton(Form)
+        self.pushButton_5.setGeometry(QtCore.QRect(50, 130, 171, 28))
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(30, 210, 61, 28))
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        self.pushButton_2.setGeometry(QtCore.QRect(90, 210, 161, 28))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_7 = QtWidgets.QPushButton(Form)
+        self.pushButton_7.setGeometry(QtCore.QRect(420, 210, 141, 28))
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.pushButton_11 = QtWidgets.QPushButton(Form)
+        self.pushButton_11.setGeometry(QtCore.QRect(1010, 210, 211, 28))
+        self.pushButton_11.setObjectName("pushButton_11")
+        self.pushButton_3 = QtWidgets.QPushButton(Form)
+        self.pushButton_3.setGeometry(QtCore.QRect(490, 130, 171, 28))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.lineEdit = QtWidgets.QLineEdit(Form)
+        self.lineEdit.setGeometry(QtCore.QRect(130, 40, 221, 25))
+        self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit_2 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_2.setGeometry(QtCore.QRect(490, 40, 221, 25))
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.lineEdit_3 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_3.setGeometry(QtCore.QRect(850, 40, 221, 25))
+        self.lineEdit_3.setObjectName("lineEdit_3")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.pushButton_10.setText(_translate("Form", "联系电话"))
+        self.pushButton_4.setText(_translate("Form", "修改营业员"))
+        self.label_3.setText(_translate("Form", "网点名称:"))
+        self.pushButton_8.setText(_translate("Form", "身份证号"))
+        self.label_4.setText(_translate("Form", "操作员姓名:"))
+        self.pushButton_6.setText(_translate("Form", "用户名"))
+        self.label.setText(_translate("Form", "操作员编号:"))
+        self.pushButton_9.setText(_translate("Form", "角色类型"))
+        self.pushButton_5.setText(_translate("Form", "搜索营业员"))
+        self.pushButton.setText(_translate("Form", "序号"))
+        self.pushButton_2.setText(_translate("Form", "操作员编号"))
+        self.pushButton_7.setText(_translate("Form", "真是姓名"))
+        self.pushButton_11.setText(_translate("Form", "所属网点编号"))
+        self.pushButton_3.setText(_translate("Form", "删除营业员"))
+
+if __name__=="__main__":
+    import sys
+    app=QtWidgets.QApplication(sys.argv)
+    widget=QtWidgets.QWidget()
+    ui=Assistant_Information_Form()
+    ui.setupUi(widget)
+    # widget.setWindowIcon(QIcon('web.png'))#增加icon图标，如果没有图片可以没有这句
+    widget.show()
+    sys.exit(app.exec_())

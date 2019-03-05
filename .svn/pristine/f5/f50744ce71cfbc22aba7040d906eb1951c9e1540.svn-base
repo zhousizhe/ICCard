@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'updateAssistant.ui'
+#
+# Created by: PyQt5 UI code generator 5.10.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class UpdateAssistant_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(731, 641)
+        self.label_7 = QtWidgets.QLabel(Form)
+        self.label_7.setGeometry(QtCore.QRect(110, 320, 101, 25))
+        self.label_7.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_7.setObjectName("label_7")
+        self.realName = QtWidgets.QLineEdit(Form)
+        self.realName.setGeometry(QtCore.QRect(220, 160, 190, 21))
+        self.realName.setObjectName("realName")
+        self.phone = QtWidgets.QLineEdit(Form)
+        self.phone.setGeometry(QtCore.QRect(220, 240, 190, 21))
+        self.phone.setObjectName("phone")
+        self.userName = QtWidgets.QLineEdit(Form)
+        self.userName.setGeometry(QtCore.QRect(220, 120, 190, 21))
+        self.userName.setObjectName("userName")
+        self.cancel = QtWidgets.QPushButton(Form)
+        self.cancel.setGeometry(QtCore.QRect(150, 390, 101, 31))
+        self.cancel.setObjectName("cancel")
+        self.roleType = QtWidgets.QComboBox(Form)
+        self.roleType.setGeometry(QtCore.QRect(220, 200, 121, 21))
+        self.roleType.setObjectName("roleType")
+        self.roleType.addItem("")
+        self.label_6 = QtWidgets.QLabel(Form)
+        self.label_6.setGeometry(QtCore.QRect(110, 280, 101, 25))
+        self.label_6.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_6.setObjectName("label_6")
+        self.assistantNum = QtWidgets.QLineEdit(Form)
+        self.assistantNum.setGeometry(QtCore.QRect(220, 80, 190, 21))
+        self.assistantNum.setObjectName("assistantNum")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(110, 80, 81, 25))
+        self.label.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label.setObjectName("label")
+        self.save = QtWidgets.QPushButton(Form)
+        self.save.setGeometry(QtCore.QRect(320, 390, 101, 31))
+        self.save.setObjectName("save")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(110, 120, 81, 25))
+        self.label_2.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_2.setObjectName("label_2")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(110, 200, 91, 25))
+        self.label_4.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_4.setObjectName("label_4")
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setGeometry(QtCore.QRect(110, 240, 72, 25))
+        self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_5.setObjectName("label_5")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setGeometry(QtCore.QRect(110, 160, 72, 25))
+        self.label_3.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName("label_3")
+        self.branchNum = QtWidgets.QLineEdit(Form)
+        self.branchNum.setGeometry(QtCore.QRect(220, 280, 190, 21))
+        self.branchNum.setObjectName("branchNum")
+        self.branchName = QtWidgets.QLineEdit(Form)
+        self.branchName.setGeometry(QtCore.QRect(220, 320, 190, 21))
+        self.branchName.setObjectName("branchName")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.label_7.setText(_translate("Form", "所属网点名称:"))
+        self.cancel.setText(_translate("Form", "取消"))
+        self.roleType.setItemText(0, _translate("Form", "营业员"))
+        self.label_6.setText(_translate("Form", "所属网点编号:"))
+        self.label.setText(_translate("Form", "操作员编号:"))
+        self.save.setText(_translate("Form", "保存"))
+        self.label_2.setText(_translate("Form", "用户名:"))
+        self.label_4.setText(_translate("Form", "角色类型:"))
+        self.label_5.setText(_translate("Form", "联系电话:"))
+        self.label_3.setText(_translate("Form", "真是姓名:"))
+
+if __name__=="__main__":
+    import sys
+    app=QtWidgets.QApplication(sys.argv)
+    widget=QtWidgets.QWidget()
+    ui=UpdateAssistant_Form()
+    ui.setupUi(widget)
+    # widget.setWindowIcon(QIcon('web.png'))#增加icon图标，如果没有图片可以没有这句
+    widget.show()
+    sys.exit(app.exec_())

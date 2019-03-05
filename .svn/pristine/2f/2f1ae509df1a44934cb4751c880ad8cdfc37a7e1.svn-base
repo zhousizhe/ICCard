@@ -1,0 +1,71 @@
+import random
+
+from PyQt5.QtWidgets import QLineEdit, QTableWidget, QAbstractItemView, QTableWidgetItem, QMessageBox
+
+from UI import DButil
+
+
+
+'''
+    营业员信息管理
+    搜索营业员
+'''
+def serach_assistant(self):
+    lineEdit = self.form8.findChild(QLineEdit, 'lineEdit')
+    operatorNum = lineEdit.text()
+    lineEdit_2 = self.form8.findChild(QLineEdit, 'lineEdit_2')
+    branchName = lineEdit_2.text()
+    lineEdit_3 = self.form8.findChild(QLineEdit, 'lineEdit_3')
+    operatorName = lineEdit_3.text()
+
+    assistantInformationSql = "SELECT user_id, operator_id, user_name, real_name, id_number, role_id, phone, branch_no, branch_name " \
+                              "FROM `t_user_base` WHERE 1=1 and deleted = 0"
+
+    paralist = []
+    operatorNum = '%' + operatorNum + '%'
+    branchName = '%' + branchName + '%'
+    operatorName = '%' + operatorName + '%'
+
+    if operatorNum.strip() != '':
+        assistantInformationSql = assistantInformationSql + " and operator_id like '%s'"
+        paralist.append(operatorNum)
+
+    if branchName.strip() != '':
+        assistantInformationSql = assistantInformationSql + " and branch_name like '%s'"
+        paralist.append(branchName)
+
+    if operatorName.strip() != '':
+        assistantInformationSql = assistantInformationSql + " and user_name like '%s'"
+        paralist.append(operatorName)
+
+    if len(paralist) > 1:
+        assistantInformationSql = assistantInformationSql % tuple(paralist)
+    elif len(paralist) > 0:
+        assistantInformationSql = assistantInformationSql % paralist[0]
+
+    assistantInformationSqlResult = DButil.conn_excu_sql(assistantInformationSql)
+    cur = assistantInformationSqlResult[0]
+    conn = assistantInformationSqlResult[1]
+    result = cur.fetchall()
+    table = self.form8.findChild(QTableWidget, 'tableWidget')
+    rows = result
+    row = len(result)  # 取得记录个数，用于设置表格的行数
+    if row < 1:
+        table.clearContents()
+        return
+    vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+    table.setRowCount(row)
+    table.setColumnCount(vol)
+    # table = QtWidgets.QTableWidget
+    # 初始化加载页面时表格内容不可修改
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+    for i in range(row):
+        for j in range(vol):
+            temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+            if temp_data is None:
+                temp_data = ""
+            data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+            table.setItem(i, j, data)
+    cur.close()
+    conn.close()

@@ -1,0 +1,78 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'recharge.ui'
+#
+# Created by: PyQt5 UI code generator 5.11.3
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Recharge_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(600, 600)
+        self.textEdit_4 = QtWidgets.QTextEdit(Form)
+        self.textEdit_4.setGeometry(QtCore.QRect(120, 200, 201, 31))
+        self.textEdit_4.setObjectName("textEdit_4")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(40, 60, 61, 21))
+        self.label.setObjectName("label")
+        self.textEdit = QtWidgets.QTextEdit(Form)
+        self.textEdit.setGeometry(QtCore.QRect(120, 50, 201, 31))
+        self.textEdit.setObjectName("textEdit")
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        self.pushButton_2.setGeometry(QtCore.QRect(310, 330, 93, 28))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(40, 110, 71, 21))
+        self.label_2.setObjectName("label_2")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(40, 210, 81, 21))
+        self.label_4.setObjectName("label_4")
+        self.textEdit_3 = QtWidgets.QTextEdit(Form)
+        self.textEdit_3.setGeometry(QtCore.QRect(120, 150, 201, 31))
+        self.textEdit_3.setObjectName("textEdit_3")
+        self.textEdit_2 = QtWidgets.QTextEdit(Form)
+        self.textEdit_2.setGeometry(QtCore.QRect(120, 100, 201, 31))
+        self.textEdit_2.setObjectName("textEdit_2")
+        self.textEdit_5 = QtWidgets.QTextEdit(Form)
+        self.textEdit_5.setGeometry(QtCore.QRect(120, 250, 201, 31))
+        self.textEdit_5.setObjectName("textEdit_5")
+        self.label_7 = QtWidgets.QLabel(Form)
+        self.label_7.setGeometry(QtCore.QRect(330, 260, 161, 21))
+        self.label_7.setObjectName("label_7")
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setGeometry(QtCore.QRect(40, 260, 81, 21))
+        self.label_5.setObjectName("label_5")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setGeometry(QtCore.QRect(40, 160, 71, 21))
+        self.label_3.setObjectName("label_3")
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(90, 330, 93, 28))
+        self.pushButton.setObjectName("pushButton")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.label.setText(_translate("Form", "卡号:"))
+        self.pushButton_2.setText(_translate("Form", "刷新"))
+        self.label_2.setText(_translate("Form", "序列号:"))
+        self.label_4.setText(_translate("Form", "余额:"))
+        self.label_7.setText(_translate("Form", "元,范围[-1000,1000]"))
+        self.label_5.setText(_translate("Form", "金额:"))
+        self.label_3.setText(_translate("Form", "卡类型:"))
+        self.pushButton.setText(_translate("Form", "充值"))
+
+if __name__=="__main__":
+    import sys
+    app=QtWidgets.QApplication(sys.argv)
+    widget=QtWidgets.QWidget()
+    ui=Recharge_Form()
+    ui.setupUi(widget)
+    # widget.setWindowIcon(QIcon('web.png'))#增加icon图标，如果没有图片可以没有这句
+    widget.show()
+    sys.exit(app.exec_())

@@ -1,0 +1,372 @@
+from PyQt5.QtWidgets import QTableWidget, QLineEdit, QComboBox, QAbstractItemView, QTableWidgetItem, QMessageBox
+
+from UI import DButil, updateBranchController
+from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
+
+from UI.updateBranch import updateBranch_Form
+
+
+'''
+ 网点信息管理 加载页面
+'''
+def loading(self):
+    table = self.form6.findChild(QTableWidget, 'tableWidget')
+    manageInfomationSql = "SELECT branch_no, name, telephone, person, province, city, district, description FROM t_iccard_branch WHERE deleted = 0"
+    manageInfomationSqlResult = DButil.conn_excu_sql(manageInfomationSql)
+    cur = manageInfomationSqlResult[0]
+    conn = manageInfomationSqlResult[1]
+    result = cur.fetchall()
+    province(self, self.form6.findChild(QComboBox, 'comboBox'))
+    rows = result
+    row = len(result)  # 取得记录个数，用于设置表格的行数
+    if row < 1:
+        table.clearContents()
+        return
+    vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+    table.setRowCount(row)
+    table.setColumnCount(vol)
+    # table = QtWidgets.QTableWidget
+    # 初始化加载页面时表格内容不可修改
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+    for i in range(row):
+        for j in range(vol):
+            # print(j)
+            temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+            if temp_data is None:
+                temp_data = ""
+            data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+            table.setItem(i, j, data)
+
+    cur.close()
+    conn.close()
+
+
+'''
+网点信息管理
+点击省份 触发事件
+加载相对应的市
+'''
+def comboBox_clicked(self):
+    combox = self.form6.findChild(QComboBox, 'comboBox')
+    comboBox_2 = self.form6.findChild(QComboBox, 'comboBox_2')
+    comboBox_2.clear()
+    provinceIndex = combox.currentIndex()
+    if provinceIndex == -1:
+        return
+    code = self.codes[provinceIndex-1]
+    self.citycodes = []
+    citys = []
+    # print(code)
+    c2c = DButil.conn_excu_sql("SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % code)
+    cur = c2c[0]
+    conn = c2c[1]
+    citys.append("请选择")
+    self.citycodes.append("0")
+    for city in cur.fetchall():
+        citys.append(str(city[0]))
+        self.citycodes.append(str(city[1]))
+
+    comboBox_2.addItems(citys)
+
+    cur.close()
+    conn.close()
+
+'''
+网点信息管理
+点击市 触发事件
+加载相对应的区
+'''
+def combox2_clicked(self):
+    comboBox_2 = self.form6.findChild(QComboBox, 'comboBox_2')
+    comboBox_3 = self.form6.findChild(QComboBox, 'comboBox_3')
+    comboBox_3.clear()
+    cityIndex = comboBox_2.currentIndex()
+    if cityIndex == -1:
+        return
+    # citycode = self.citycodes[cityIndex]
+    c2c = DButil.conn_excu_sql("SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % self.citycodes[cityIndex])
+    cur = c2c[0]
+    conn = c2c[1]
+    districts = []
+    districts.append("请选择")
+    self.citycodes.append("0")
+    for district in cur.fetchall():
+        districts.append(str(district[0]))
+    comboBox_3.addItems(districts)
+    # print(district)
+    cur.close()
+    conn.close()
+
+
+
+
+'''
+网点信息管理
+修改网点
+'''
+def modify_branch(self):
+    table = self.form6.findChild(QTableWidget, 'tableWidget')
+    selectedRanges = table.selectedRanges()
+    for range in selectedRanges:
+        dateList = []
+        dateIndex = 0
+        while dateIndex < table.columnCount():
+            row = range.topRow()
+            modle = table.model()
+            dateIndexModel = modle.index(row, dateIndex)
+            dateList.append(modle.data(dateIndexModel))
+            print(dateList)
+            dateIndex = dateIndex+1
+    # return dateList
+
+
+    if len(selectedRanges) <= 0:
+        QMessageBox.warning(self, "错误", "未选中行！", QMessageBox.Close)
+        return
+
+    # 获得选中行的id
+
+    widget = QtWidgets.QWidget()
+    ui = updateBranch_Form()
+    ui.setupUi(widget)
+    ui.save.clicked.connect(lambda: updateBranchController.save(self, dateList)) #保存
+    ui.cancel.clicked.connect(lambda: updateBranchController.cancel(self)) #取消
+    self.updateBanch = widget
+    self.updateBanch.setWindowFlags(Qt.Window)
+    self.updateBanch.show()
+    province(self, self.updateBanch.findChild(QComboBox, "provinces"))
+    provincesBox = self.updateBanch.findChild(QComboBox, "provinces")
+    try:
+        # 查找省索引供下拉框设置当前索引
+        indexprovinces = provincesBox.findText(dateList[5])
+    except BaseException: QMessageBox.warning(self, "错误", "系统错误", QMessageBox.Close)
+    provincesBox.setCurrentIndex(indexprovinces)
+    provinces_clicked(self)
+
+    citysBox = self.updateBanch.findChild(QComboBox, "citys")
+    try:
+        # 查找市索引供下拉框设置当前索引
+        indexcitys = citysBox.findText(dateList[6])
+    except BaseException: QMessageBox.warning(self, "错误", "系统错误", QMessageBox.Close)
+    citysBox.setCurrentIndex(indexcitys)
+    citys_clicked(self)
+
+    districtsBox = self.updateBanch.findChild(QComboBox, "districts")
+    try:
+        # 查找区索引供下拉框设置当前索引
+        indexdistricts = districtsBox.findText(dateList[7])
+    except BaseException: QMessageBox.warning(self, "错误", "系统错误", QMessageBox.Close)
+    districtsBox.setCurrentIndex(indexdistricts)
+
+    self.updateBanch.findChild(QLineEdit, "branchNum").setText(dateList[1])
+    self.updateBanch.findChild(QLineEdit, "names").setText(dateList[2])
+    self.updateBanch.findChild(QLineEdit, "phone").setText(dateList[3])
+    self.updateBanch.findChild(QLineEdit, "person").setText(dateList[4])
+
+
+    self.updateBanch.findChild(QLineEdit, "lineEdit_9").setText(dateList[8])
+
+    citys = self.updateBanch.findChild(QComboBox, "citys")
+    if provincesBox is not None:
+        provincesBox.currentIndexChanged.connect(lambda: provinces_clicked(self))
+
+    if citys is not None:
+        citys.currentIndexChanged.connect(lambda: citys_clicked(self))
+
+
+'''
+网点信息管理
+撤销网点
+'''
+def revoke_branch(self):
+    table = self.form6.findChild(QTableWidget, 'tableWidget')
+    idList = []
+    BranchNoString = ""
+    selectedRanges = table.selectedRanges()
+    tempsize = 1
+
+    for range in selectedRanges:
+        row = range.topRow()
+        modle = table.model()
+        indexId = modle.index(row, 0)  # 列数据:id
+        indexBranchNo = modle.index(row, 1)  # 列数据:BranchNo
+        dataId = modle.data(indexId)
+        dataBranchNo = modle.data(indexBranchNo)
+        BranchNoString = BranchNoString + dataBranchNo + ","
+        if tempsize % 3 == 0:
+            BranchNoString = BranchNoString + "\n"
+        idList.append(dataId)
+        tempsize = tempsize+1
+
+    if len(selectedRanges) <= 0:
+        QMessageBox.warning(self, "错误", "未选中行！", QMessageBox.Close)
+        return
+
+    # 获得选中行的id
+    reply = QMessageBox.question(self, '警告', "确定对网点："+BranchNoString+"进行撤销？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+    if reply == QMessageBox.Yes:
+        for id in idList:
+            updateBranchSql = "UPDATE t_iccard_branch SET deleted = %d  where id=%d" % (1, int(id))
+            try:
+                c2c = DButil.conn_excu_sql(updateBranchSql)
+                c2c[0].close()
+                c2c[1].close()
+            except BaseException:
+                QMessageBox.warning(self, "错误", "撤销失败！", QMessageBox.Close)
+                return
+        QMessageBox.information(self, "成功", "撤销成功！", QMessageBox.Close)
+    serach_branch(self)
+
+
+'''
+    网点信息管理
+    加载省份数据
+'''
+def province(self, combox):
+    sql = "SELECT NAME,CODE FROM d_area WHERE parent = 0"
+    # result = DButil.conn_excu_sql(sql)
+    sqlResult = DButil.conn_excu_sql(sql)
+    cur = sqlResult[0]
+    conn = sqlResult[1]
+    result = cur.fetchall()
+
+    # combox = self.form6.findChild(QComboBox, 'comboBox')
+    self.provinces = []
+    self.provincesCodes = []
+
+    for province in result:
+        self.provinces.append(str(province[0]))
+        self.provincesCodes.append(str(province[1]))
+    combox.addItems(self.provinces)
+    cur.close()
+    conn.close()
+
+
+    '''
+    网点信息管理
+    点击省份 触发事件
+    加载相对应的市
+    '''
+
+def provinces_clicked(self):
+    provinces = self.updateBanch.findChild(QComboBox, "provinces")
+    cityDefault = self.updateBanch.findChild(QComboBox, "citys")
+    cityDefault.clear()
+    provinceIndex = provinces.currentIndex()
+    if provinceIndex == -1:
+        provinceIndex = 0
+    code = self.codes[provinceIndex]
+    self.citys = []
+    self.citycodes = []
+    # print(code)
+    sql = "SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % code
+    sqlResult = DButil.conn_excu_sql(sql)
+
+    cur = sqlResult[0]
+    conn = sqlResult[1]
+    result = cur.fetchall()
+
+    for city in result:
+        self.citys.append(str(city[0]))
+        self.citycodes.append(str(city[1]))
+
+    cityDefault.addItems(self.citys)
+    cur.close()
+    conn.close()
+
+
+def citys_clicked(self):
+    citys = self.updateBanch.findChild(QComboBox, "citys")
+    districtDefault = self.updateBanch.findChild(QComboBox, "districts")
+    districtDefault.clear()
+    citysIndex = citys.currentIndex()
+    if citysIndex == -1:
+        citysIndex = 0
+
+    sql = "SELECT NAME,CODE FROM d_area WHERE parent = '%s'" % self.citycodes[citysIndex]
+    sqlResult = DButil.conn_excu_sql(sql)
+    cur = sqlResult[0]
+    conn = sqlResult[1]
+    result = cur.fetchall()
+
+    self.districts = []
+    self.districtsCodes = []
+    for district in result:
+        self.districts.append(str(district[0]))
+        self.districtsCodes.append(str(district[1]))
+
+    districtDefault.addItems(self.districts)
+    cur.close()
+    conn.close()
+
+
+
+    '''
+    网点信息管理
+    搜索网点
+    '''
+def serach_branch(self):
+    lineEdit = self.form6.findChild(QLineEdit, 'lineEdit')
+    branchName = lineEdit.text()
+    comBox = self.form6.findChild(QComboBox, 'comboBox')
+    provinces = comBox.currentText()
+    comBox_2 = self.form6.findChild(QComboBox, 'comboBox_2')
+    citys = comBox_2.currentText()
+    comBox_3 = self.form6.findChild(QComboBox, 'comboBox_3')
+    districts = comBox_3.currentText()
+    branchInformationSql = "SELECT branch_no, name, telephone, person, province, city, district, description FROM t_iccard_branch WHERE 1=1 and deleted = 0"
+    paralist = []
+    branchName = '%' + branchName + '%'
+    if provinces != '请选择':
+        branchInformationSql = branchInformationSql + " and province='%s'"
+        paralist.append(provinces)
+
+    if citys != '请选择':
+        branchInformationSql = branchInformationSql + " and city='%s'"
+        paralist.append(citys)
+
+    if districts != '请选择' and districts != '':
+        branchInformationSql = branchInformationSql + " and district='%s'"
+        paralist.append(districts)
+
+    if branchName != '' and branchName != '%%':
+        branchInformationSql = branchInformationSql + " and description like '%s'"
+        paralist.append(branchName)
+
+    if len(paralist) > 1:
+        branchInformationSql = branchInformationSql % tuple(paralist)
+    elif len(paralist) > 0:
+        branchInformationSql = branchInformationSql % paralist[0]
+
+    branchInformationSqlResult = DButil.conn_excu_sql(branchInformationSql)
+    cur = branchInformationSqlResult[0]
+    conn = branchInformationSqlResult[1]
+    result = cur.fetchall()
+
+    table = self.form6.findChild(QTableWidget, 'tableWidget')
+    rows = result
+    row = len(result)  # 取得记录个数，用于设置表格的行数
+    if row < 1:
+        table.clearContents()
+        return
+    vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+    table.setRowCount(row)
+    table.setColumnCount(vol)
+    # table = QtWidgets.QTableWidget
+    # 初始化加载页面时表格内容不可修改
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+    # table.setSelectionMode(QAbstractItemView.SingleSelection)  # 设置只能选中一行
+    table.setSelectionBehavior(QAbstractItemView.SelectRows)  # 设置只有行选中
+    table.clearSelection()  # 取消选中
+
+    for i in range(row):
+        for j in range(vol):
+            temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+            if temp_data is None:
+                temp_data = ""
+            data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+            table.setItem(i, j, data)
+    cur.close()
+    conn.close()

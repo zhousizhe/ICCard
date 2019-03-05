@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <login model="login">
+         <loginType paraName="loginType">
+             <value default=""></value>
+         </loginType>
+    </login>
+</root>

@@ -1,0 +1,17 @@
+import pymysql
+import sqlite3
+from UI import cacheUtil
+
+
+def conn_excu_sql(sql):
+    loginType = cacheUtil.getCache("loginType")
+    if int(loginType) == 0:
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+    elif int(loginType) == 1:
+        conn = sqlite3.connect('.\\topcharge.db')
+    else:
+        return
+    cur = conn.cursor()
+    cur.execute(sql)
+    conn.commit()
+    return cur, conn

@@ -1,0 +1,107 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'assistant_update_password.ui'
+#
+# Created by: PyQt5 UI code generator 5.10.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator, QFont
+from PyQt5.QtWidgets import QLineEdit
+
+
+class Assistant_Upassword_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        self.title = QtWidgets.QLabel(Form)
+        self.title.setGeometry(QtCore.QRect(20, 5, 200, 20))
+        self.title.setObjectName("title")
+        self.label_5 = QtWidgets.QLabel(Form)
+        self.label_5.setGeometry(QtCore.QRect(40, 240, 72, 25))
+        self.label_5.setAlignment(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_5.setObjectName("label_5")
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(40, 40, 72, 25))
+        self.label.setAlignment(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label.setObjectName("label")
+        self.label_4 = QtWidgets.QLabel(Form)
+        self.label_4.setGeometry(QtCore.QRect(40, 190, 61, 25))
+        self.label_4.setAlignment(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_4.setObjectName("label_4")
+        self.label_18 = QtWidgets.QLabel(Form)
+        self.label_18.setGeometry(QtCore.QRect(320, 140, 231, 25))
+        self.label_18.setObjectName("label_18")
+        self.label_20 = QtWidgets.QLabel(Form)
+        self.label_20.setGeometry(QtCore.QRect(320, 190, 231, 25))
+        self.label_20.setObjectName("label_20")
+        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3.setGeometry(QtCore.QRect(40, 140, 61, 25))
+        self.label_3.setAlignment(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_3.setObjectName("label_3")
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(160, 300, 101, 25))
+        self.pushButton.setObjectName("pushButton")
+        self.label_19 = QtWidgets.QLabel(Form)
+        self.label_19.setGeometry(QtCore.QRect(320, 240, 231, 25))
+        self.label_19.setObjectName("label_19")
+        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2.setGeometry(QtCore.QRect(40, 90, 61, 25))
+        self.label_2.setAlignment(QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
+        self.label_2.setObjectName("label_2")
+        self.lineEdit = QtWidgets.QLineEdit(Form)
+        self.lineEdit.setGeometry(QtCore.QRect(120, 40, 190, 25))
+        self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit_2 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_2.setGeometry(QtCore.QRect(120, 90, 190, 25))
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.lineEdit_3 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_3.setGeometry(QtCore.QRect(120, 140, 190, 25))
+        self.lineEdit_3.setValidator(QRegExpValidator(QRegExp('^[0-9a-zA-Z]{6,24}$')))
+        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.lineEdit_3.setEchoMode(QLineEdit.Password)
+        self.lineEdit_4 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_4.setGeometry(QtCore.QRect(120, 190, 190, 25))
+        self.lineEdit_4.setValidator(QRegExpValidator(QRegExp('^[0-9a-zA-Z]{6,24}$')))
+        self.lineEdit_4.setObjectName("lineEdit_4")
+        self.lineEdit_4.setEchoMode(QLineEdit.Password)
+        self.lineEdit_5 = QtWidgets.QLineEdit(Form)
+        self.lineEdit_5.setGeometry(QtCore.QRect(120, 240, 190, 25))
+        self.lineEdit_5.setObjectName("lineEdit_5")
+        self.lineEdit_5.setValidator(QRegExpValidator(QRegExp('^[0-9a-zA-Z]{6,24}$')))
+        self.lineEdit_5.setEchoMode(QLineEdit.Password)
+        self.line = QtWidgets.QFrame(Form)
+        self.line.setGeometry(QtCore.QRect(10, 0, 10, 1024))
+        self.line.setFrameShape(QtWidgets.QFrame.VLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.label_5.setText(_translate("Form", "确认密码："))
+        self.label.setText(_translate("Form", "用户编号："))
+        self.label_4.setText(_translate("Form", "新密码："))
+        self.label_18.setText(_translate("Form", "6-24位数字或字母"))
+        self.label_20.setText(_translate("Form", "6-24位数字或字母"))
+        self.label_3.setText(_translate("Form", "原密码："))
+        self.pushButton.setText(_translate("Form", "保存"))
+        self.label_19.setText(_translate("Form", "6-24位数字或字母"))
+        self.label_2.setText(_translate("Form", "用户名："))
+        self.title.setText(_translate("Form", "营业员密码修改"))
+        self.title.setFont(QFont("Roman times", 12, QFont.Bold))
+        self.title.setGeometry(QtCore.QRect(40, 0, 190, 20))
+
+if __name__=="__main__":
+    import sys
+    app=QtWidgets.QApplication(sys.argv)
+    widget=QtWidgets.QWidget()
+    ui=Assistant_Upassword_Form()
+    ui.setupUi(widget)
+    # widget.setWindowIcon(QIcon('web.png'))#增加icon图标，如果没有图片可以没有这句
+    widget.show()
+    sys.exit(app.exec_())

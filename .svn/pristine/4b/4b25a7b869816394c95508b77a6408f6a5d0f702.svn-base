@@ -1,0 +1,17 @@
+import pymysql
+
+def conn_excu_sql(sql):
+    conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+    cur = conn.cursor()
+    # if sql.find("INSERT") > -1 or \
+    #         sql.find("UPDATE") > -1 or \
+    #         sql.find("DELETE") > -1:
+    #     sql = sql+" COMMIT"
+    # # print(sql)
+    cur.execute(sql)
+    conn.commit()
+    # result=cur.fetchall()
+    sqlResult = cur
+    cur.close()
+    conn.close()
+    return sqlResult

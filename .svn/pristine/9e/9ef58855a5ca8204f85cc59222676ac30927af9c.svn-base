@@ -1,0 +1,5 @@
+from PyQt5.QtWidgets import QTableWidget
+
+
+def modify_branch(self):
+    table = self.form6.findChild(QTableWidget, 'tableWidget')

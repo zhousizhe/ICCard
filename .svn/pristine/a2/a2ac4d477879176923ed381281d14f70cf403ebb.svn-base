@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>60</y>
+     <width>200</width>
+     <height>511</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>电动车充点卡管理系统</string>
+    </property>
+   </column>
+   <item>
+    <property name="text">
+     <string>IC卡</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>办卡</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>充值</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>IC卡信息管理</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>充值信息查询</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>网点</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>创建网点</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>网点信息管理</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>营业员</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>添加营业员</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>营业员信息管理</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>营业员密码修改</string>
+     </property>
+    </item>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>treeWidget</sender>
+   <signal>itemClicked(QTreeWidgetItem*,int)</signal>
+   <receiver>Form</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>315</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

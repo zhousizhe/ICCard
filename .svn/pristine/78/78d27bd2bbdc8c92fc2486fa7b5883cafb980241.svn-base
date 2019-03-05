@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'chooseBranch.ui'
+#
+# Created by: PyQt5 UI code generator 5.10.1
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from UI import chooseBranchController
+
+
+class ChooseBranch_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(802, 638)
+        self.branchNameInput = QtWidgets.QLineEdit(Form)
+        self.branchNameInput.setGeometry(QtCore.QRect(80, 40, 160, 20))
+        self.branchNameInput.setText("")
+        self.branchNameInput.setObjectName("branchNameInput")
+        self.cancelButton = QtWidgets.QPushButton(Form)
+        self.cancelButton.setGeometry(QtCore.QRect(690, 580, 80, 25))
+        self.cancelButton.setObjectName("cancelButton")
+        self.branchName_2 = QtWidgets.QLabel(Form)
+        self.branchName_2.setGeometry(QtCore.QRect(10, 40, 71, 20))
+        self.branchName_2.setObjectName("branchName_2")
+        self.tableWidget = QtWidgets.QTableWidget(Form)
+        self.tableWidget.setGeometry(QtCore.QRect(0, 90, 800, 480))
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(9)
+        self.tableWidget.setRowCount(0)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(6, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.tableWidget.setHorizontalHeaderItem(8, item)
+        self.commitButton = QtWidgets.QPushButton(Form)
+        self.commitButton.setGeometry(QtCore.QRect(570, 580, 80, 25))
+        self.commitButton.setObjectName("commitButton")
+
+        self.serchButton = QtWidgets.QPushButton(Form)
+        self.serchButton.setGeometry(QtCore.QRect(270, 40, 80, 25))
+        self.serchButton.setObjectName("serchButton")
+
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "选择网点"))
+        self.cancelButton.setText(_translate("Form", "取消"))
+        self.branchName_2.setText(_translate("Form", "网点名称："))
+        item = self.tableWidget.horizontalHeaderItem(0)
+        item.setText(_translate("Form", "序号"))
+        item = self.tableWidget.horizontalHeaderItem(1)
+        item.setText(_translate("Form", "网点编号"))
+        item = self.tableWidget.horizontalHeaderItem(2)
+        item.setText(_translate("Form", "网点名称"))
+        item = self.tableWidget.horizontalHeaderItem(3)
+        item.setText(_translate("Form", "网点电话"))
+        item = self.tableWidget.horizontalHeaderItem(4)
+        item.setText(_translate("Form", "网点联系人"))
+        item = self.tableWidget.horizontalHeaderItem(5)
+        item.setText(_translate("Form", "网点开始时间"))
+        item = self.tableWidget.horizontalHeaderItem(6)
+        item.setText(_translate("Form", "网点关闭时间"))
+        item = self.tableWidget.horizontalHeaderItem(7)
+        item.setText(_translate("Form", "运营商编号"))
+        item = self.tableWidget.horizontalHeaderItem(8)
+        item.setText(_translate("Form", "运营商名称"))
+        self.commitButton.setText(_translate("Form", "确定"))
+        self.serchButton.setText(_translate("Form", "搜索"))
+
+if __name__=="__main__":
+    import sys
+    app=QtWidgets.QApplication(sys.argv)
+    widget=QtWidgets.QWidget()
+    ui=ChooseBranch_Form()
+    ui.setupUi(widget)
+    # widget.setWindowIcon(QIcon('web.png'))#增加icon图标，如果没有图片可以没有这句
+    widget.show()
+    sys.exit(app.exec_())

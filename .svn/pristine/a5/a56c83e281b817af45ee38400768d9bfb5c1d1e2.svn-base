@@ -1,0 +1,102 @@
+import hashlib
+import random
+
+import pymysql
+from PyQt5.QtWidgets import QLineEdit, QMessageBox, QComboBox
+from PyQt5 import QtCore
+
+from UI import DButil
+
+
+'''
+    添加营业员
+    点击保存触发事件
+'''
+def save_click(self):
+
+    lineEdit = self.form7.findChild(QLineEdit, "lineEdit")
+    password = lineEdit.text()
+    lineEdit_2 = self.form7.findChild(QLineEdit, "lineEdit_2")
+    realPassword = lineEdit_2.text()
+    lineEdit_3 = self.form7.findChild(QLineEdit, "lineEdit_3")
+    operator_id = lineEdit_3.text()
+    lineEdit_4 = self.form7.findChild(QLineEdit, "lineEdit_4")
+    real_name = lineEdit_4.text()
+    lineEdit_5 = self.form7.findChild(QLineEdit, "lineEdit_5")
+    id_number = lineEdit_5.text()
+    lineEdit_6 = self.form7.findChild(QLineEdit, "lineEdit_6")
+    phone = lineEdit_6.text()
+    lineEdit_7 = self.form7.findChild(QLineEdit, "lineEdit_7")
+    branch_no = lineEdit_7.text()
+    lineEdit_8 = self.form7.findChild(QLineEdit, "lineEdit_8")
+    branch_name = lineEdit_8.text()
+    lineEdit_9 = self.form7.findChild(QLineEdit, "lineEdit_9")
+    user_name = lineEdit_9.text()
+    comboBox_5 = self.form7.findChild(QComboBox, "comboBox_5")
+    role_id = comboBox_5.currentText()
+    roleId = 5
+
+    if user_name.strip() == '' or password.strip() == '' or realPassword.strip() == '' or branch_no.strip() == '' or  operator_id.strip() == '':
+        if user_name.strip() == '':
+            QMessageBox.information(self, "提示信息",
+                                    "用户名称不能为空！")
+            return
+
+        if password.strip() == '':
+            QMessageBox.information(self, "提示信息",
+                                    "用户密码不能为空！")
+            return
+
+        if realPassword.strip() == '':
+            QMessageBox.information(self, "提示信息",
+                                    "确认密码不能为空！")
+            return
+
+        if operator_id.strip() == '':
+            QMessageBox.information(self, "提示信息",
+                                    "营业员编号不能为空！")
+            return
+
+        if branch_no.strip() == '':
+            QMessageBox.information(self, "提示信息",
+                                    "网点编号不能为空！")
+            return
+    else:
+        if password != realPassword:
+            QMessageBox.information(self, "提示信息",
+                                    "请确保两次输入密码相同！")
+            return
+
+        # if role_id == '管理员':
+        #     roleId = 4
+
+            # uid = cacheUtil.getCache("uid")
+        userId = random.randrange(1000000000000000000, 9999999999999999999)
+        md5 = hashlib.md5()
+        md5.update(password.encode('utf-8'))
+        print(
+            "INSERT INTO t_user_base (user_id, user_name, password, operator_id, real_name, id_number, phone, branch_no, branch_name, role_id) "
+            "VALUES(%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d) " % (
+                userId, user_name, password, operator_id, real_name, id_number, phone, branch_no, branch_name, roleId))
+        assistantInsertSql = "INSERT INTO t_user_base (user_id, user_name, password, operator_id, real_name, id_number, phone, branch_no, branch_name, role_id)  " \
+                             "VALUES(%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d) " % (userId, user_name, md5.hexdigest(), operator_id, real_name, id_number, phone, branch_no, branch_name, roleId)
+
+    DButil.conn_excu_sql(assistantInsertSql)
+    refush(self)
+    QMessageBox.information(self, "保存", "添加成功")
+
+
+'''
+    添加营业员
+    重置按钮
+'''
+def refush(self):
+    self.form7.findChild(QLineEdit, "lineEdit").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_2").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_3").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_4").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_5").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_6").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_7").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_8").clear()
+    self.form7.findChild(QLineEdit, "lineEdit_9").clear()

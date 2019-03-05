@@ -1,0 +1,200 @@
+import random
+
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QLineEdit, QTableWidget, QAbstractItemView, QTableWidgetItem, QMessageBox
+
+from UI import DButil, updateassistantController
+from UI.updateAssistant import UpdateAssistant_Form
+from PyQt5.QtCore import Qt
+
+'''
+营业员信息管理
+加载页面
+'''
+def loading_assistant(self):
+    table = self.form8.findChild(QTableWidget, 'tableWidget')
+    assistantInfomationSql = "SELECT user_id, operator_id, user_name, real_name, id_number, phone, branch_no, branch_name FROM t_user_base WHERE deleted = 0"
+    assistantInfomationSqlResult = DButil.conn_excu_sql(assistantInfomationSql)
+    cur = assistantInfomationSqlResult[0]
+    conn = assistantInfomationSqlResult[1]
+    result = cur.fetchall()
+
+    rows = result
+    row = len(result)  # 取得记录个数，用于设置表格的行数
+    if row < 1:
+        table.clearContents()
+        return
+    vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+    table.setRowCount(row)
+    table.setColumnCount(vol)
+    # table = QtWidgets.QTableWidget
+    # 初始化加载页面时表格内容不可修改
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+    for i in range(row):
+        for j in range(vol):
+            # print(j)
+            temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+            if temp_data is None:
+                temp_data = ""
+            data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+            table.setItem(i, j, data)
+
+    cur.close()
+    conn.close()
+
+
+'''
+    营业员信息管理
+    搜索营业员
+'''
+def serach_assistant(self):
+    lineEdit = self.form8.findChild(QLineEdit, 'lineEdit')
+    operatorNum = lineEdit.text()
+    lineEdit_2 = self.form8.findChild(QLineEdit, 'lineEdit_2')
+    branchName = lineEdit_2.text()
+    lineEdit_3 = self.form8.findChild(QLineEdit, 'lineEdit_3')
+    operatorName = lineEdit_3.text()
+
+    assistantInformationSql = "SELECT user_id, operator_id, user_name, real_name, id_number, phone, branch_no, branch_name " \
+                              "FROM `t_user_base` WHERE 1=1 and deleted = 0 and role_id = 5"
+
+    paralist = []
+    operatorNum = '%' + operatorNum + '%'
+    branchName = '%' + branchName + '%'
+    operatorName = '%' + operatorName + '%'
+
+    if operatorNum.strip() != '':
+        assistantInformationSql = assistantInformationSql + " and operator_id like '%s'"
+        paralist.append(operatorNum)
+
+    if branchName.strip() != '':
+        assistantInformationSql = assistantInformationSql + " and branch_name like '%s'"
+        paralist.append(branchName)
+
+    if operatorName.strip() != '':
+        assistantInformationSql = assistantInformationSql + " and user_name like '%s'"
+        paralist.append(operatorName)
+
+    if len(paralist) > 1:
+        assistantInformationSql = assistantInformationSql % tuple(paralist)
+    elif len(paralist) > 0:
+        assistantInformationSql = assistantInformationSql % paralist[0]
+
+    assistantInformationSqlResult = DButil.conn_excu_sql(assistantInformationSql)
+    cur = assistantInformationSqlResult[0]
+    conn = assistantInformationSqlResult[1]
+    result = cur.fetchall()
+
+    table = self.form8.findChild(QTableWidget, 'tableWidget')
+    rows = result
+    row = len(result)  # 取得记录个数，用于设置表格的行数
+    if row < 1:
+        table.clearContents()
+        return
+    vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+    table.setRowCount(row)
+    table.setColumnCount(vol)
+    # table = QtWidgets.QTableWidget
+    # 初始化加载页面时表格内容不可修改
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+    # table.setSelectionMode(QAbstractItemView.SingleSelection)  # 设置只能选中一行
+    table.setSelectionBehavior(QAbstractItemView.SelectRows)  # 设置只有行选中
+    table.clearSelection()  # 取消选中
+
+    for i in range(row):
+        for j in range(vol):
+            temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+            if temp_data is None:
+                temp_data = ""
+            data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+            table.setItem(i, j, data)
+    cur.close()
+    conn.close()
+
+'''
+    营业员信息管理
+    删除营业员
+'''
+def remove_assistant(self):
+    table = self.form8.findChild(QTableWidget, 'tableWidget')
+    idList = []
+    assistantNoString = ""
+    selectedRanges = table.selectedRanges()
+    tempsize = 1
+
+    for range in selectedRanges:
+        row = range.topRow()
+        modle = table.model()
+        indexId = modle.index(row, 0)  # 列数据:userid
+        indexassistantNo = modle.index(row, 1)  # 列数据:assistantNo
+        dataId = modle.data(indexId)
+        dataUserId = int(dataId)
+        dataassistantNo = modle.data(indexassistantNo)
+        assistantNoString = assistantNoString + dataassistantNo + ","
+        if tempsize % 3 == 0:
+            assistantNoString = assistantNoString + "\n"
+        idList.append(dataUserId)
+        tempsize = tempsize+1
+
+    if len(selectedRanges) <= 0:
+        QMessageBox.warning(self, "错误", "未选中行！", QMessageBox.Close)
+        return
+
+    # 获得选中行的id
+    reply = QMessageBox.question(self, '警告', "确定删除营业员："+assistantNoString+"？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+    if reply == QMessageBox.Yes:
+        for id in idList:
+            updateBranchSql = "UPDATE `t_user_base` SET deleted = %d  where user_id=%d" % (1, int(id))
+            try:
+                c2c = DButil.conn_excu_sql(updateBranchSql)
+                c2c[0].close()
+                c2c[1].close()
+            except BaseException:
+                QMessageBox.warning(self, "错误", "删除失败！", QMessageBox.Close)
+                return
+        QMessageBox.information(self, "成功", "删除成功！", QMessageBox.Close)
+    serach_assistant(self)
+
+
+'''
+    营业员信息管理
+    修改营业员
+'''
+def update_assistant(self):
+    table = self.form8.findChild(QTableWidget, 'tableWidget')
+    selectedRanges = table.selectedRanges()
+    for range in selectedRanges:
+        dateList = []
+        dateIndex = 0
+        while dateIndex < table.columnCount():
+            row = range.topRow()
+            modle = table.model()
+            dateIndexModel = modle.index(row, dateIndex)
+            dateList.append(modle.data(dateIndexModel))
+            print(dateList)
+            dateIndex = dateIndex + 1
+    # return dateList
+
+    if len(selectedRanges) <= 0:
+        QMessageBox.warning(self, "错误", "未选中行！", QMessageBox.Close)
+        return
+
+     # 获得选中行的id
+
+    widget = QtWidgets.QWidget()
+    ui = UpdateAssistant_Form()
+    ui.setupUi(widget)
+    ui.save.clicked.connect(lambda: updateassistantController.save(self, dateList))  # 保存
+    ui.cancel.clicked.connect(lambda: updateassistantController.cancel(self))  # 取消
+    self.updateAssistant = widget
+    self.updateAssistant.setWindowFlags(Qt.Window)
+    self.updateAssistant.show()
+
+    self.updateAssistant.findChild(QLineEdit, "assistantNum").setText(dateList[1])
+    self.updateAssistant.findChild(QLineEdit, "userName").setText(dateList[2])
+    self.updateAssistant.findChild(QLineEdit, "realName").setText(dateList[3])
+    # self.updateAssistant.findChild(QComboBox, "rolrType")
+    self.updateAssistant.findChild(QLineEdit, "phone").setText(dateList[5])
+    self.updateAssistant.findChild(QLineEdit, "branchNum").setText(dateList[6])
+    self.updateAssistant.findChild(QLineEdit, "branchName").setText(dateList[7])

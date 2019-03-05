@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+    <login model="login">
+         <loginType paraName="loginType">
+             <value default="">1</value>
+         </loginType>
+    </login>
+    
+    <ICCard model="ICCard">
+         <roleType paraName="roleType">
+             <value default="">0,</value>
+         </roleType>
+    </ICCard>
+
+    <DataBase model="DataBase">
+         <ip paraName="ip">
+             <value default="">10.12.2.14</value>
+         </ip>
+        <user paraName="user">
+             <value default="">root</value>
+         </user>
+        <passwd paraName="passwd">
+             <value default="">123456</value>
+         </passwd>
+        <db paraName="db">
+             <value default="">topcharge</value>
+         </db>
+    </DataBase>
+</root>

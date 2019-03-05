@@ -1,0 +1,61 @@
+import hashlib
+
+import pymysql
+from PyQt5 import QtCore, QtGui, QtWidgets
+from tkinter import *
+
+from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
+
+from UI.UserLogin import Ui_Form_User_Login
+from UI.tree import Ui_Form_Tree_View
+
+
+class Module_User_Login(Ui_Form_User_Login, QWidget):
+    def __init__(self):
+        super(Module_User_Login, self).__init__()
+        self.setupUi(self)
+        self.pushButton.clicked.connect(self.login_check)
+        # 背景图片暂不添加
+        # window_pale = QtGui.QPalette()
+        # window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("background_img/img2.jpg")))
+        # self.setPalette(window_pale)
+
+    def login_check(self, Form):
+        conn = pymysql.connect(host='10.12.2.14', user='root', passwd="123456", db='topcharge')
+        cur = conn.cursor()
+        _translate = QtCore.QCoreApplication.translate
+        phone = self.lineEdit.text()
+        password = self.lineEdit_2.text()
+        if phone.strip() == '' or password.strip() == '':
+            self.label_4.setText(_translate("Form", "请输入账号或密码！"))
+            self.label_4.show()
+            self.lineEdit.setFocus()
+        else:
+            # cur.execute("SELECT * FROM t_user_base")
+            password = password+"SeiYuan"
+            print(password)
+            md5 = hashlib.md5()
+            md5.update(password.encode('utf-8'))
+            cur.execute("SELECT * FROM t_user_base WHERE phone  = '%s' AND password = '%s'" % (phone, md5.hexdigest()))
+            if cur.rowcount <= 0:
+                self.label_4.setText(_translate("Form", "账号密码错误！"))
+                self.label_4.show()
+                self.lineEdit.clear()
+                self.lineEdit_2.clear()
+                self.lineEdit.setFocus()
+            else:
+                self.label_4.hide()
+                self.hide()
+                self.dia = Ui_Form_Tree_View()
+                self.dia.show()
+            cur.close()
+            conn.close()
+        # result=cur.fetchall()
+        # for r in cur:
+        #     print(r[1])
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    w = Module_User_Login()
+    w.show()
+    sys.exit(app.exec_())

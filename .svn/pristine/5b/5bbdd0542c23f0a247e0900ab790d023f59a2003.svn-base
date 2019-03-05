@@ -1,0 +1,36 @@
+from PyQt5.QtWidgets import QLineEdit, QMessageBox
+
+from UI import DButil, assistantInformationsController
+
+
+def save(self, dateList):
+    lineEdit = self.updateAssistant.findChild(QLineEdit, "assistantNum")
+    assistantNum = lineEdit.text()
+    lineEdit_2 = self.updateAssistant.findChild(QLineEdit, 'userName')
+    userName = lineEdit_2.text()
+    lineEdit_3 = self.updateAssistant.findChild(QLineEdit, 'phone')
+    phone = lineEdit_3.text()
+    lineEdit_4 = self.updateAssistant.findChild(QLineEdit, 'realName')
+    realName = lineEdit_4.text()
+    # lineEdit_5 = self.updateBanch.findChild(QLineEdit, 'roleType')
+    # roleType = lineEdit_5.text()
+    lineEdit_6 = self.updateAssistant.findChild(QLineEdit, 'branchNum')
+    branchNum = lineEdit_6.text()
+    lineEdit_7 = self.updateAssistant.findChild(QLineEdit, 'branchName')
+    branchName = lineEdit_7.text()
+
+    updaAssistanthSql = "UPDATE `t_user_base` SET operator_id ='%s', user_name='%s', phone='%s', real_name='%s', branch_no ='%s', " \
+                        "branch_name='%s' where operator_id = '%s'" % (assistantNum, userName, phone, realName, branchNum, branchName, dateList[0])
+
+    c2c = DButil.conn_excu_sql(updaAssistanthSql)
+    c2c[0].close()
+    c2c[1].close()
+    QMessageBox.information(self, "成功", "更改成功！", QMessageBox.Close)
+
+    self.updateAssistant.hide()
+    assistantInformationsController.serach_assistant(self)
+
+
+def cancel(self):
+    self.updateAssistant.hide()
+    assistantInformationsController.serach_assistant(self)

@@ -1,0 +1,54 @@
+from PyQt5.QtWidgets import QLineEdit, QComboBox, QAbstractItemView, QTableWidget, QTableWidgetItem
+
+from UI import DButil
+
+
+def iniquery(self):
+    cardNum = self.form3.findChild(QLineEdit, "cardNum")  # 卡号
+    userName = self.form3.findChild(QLineEdit, "userName")  # 用户名
+    phone = self.form3.findChild(QLineEdit, "phone")  # 手机号
+    idNum = self.form3.findChild(QLineEdit, "idNum")  # 手机号
+    branch = self.form3.findChild(QComboBox, "branch")  # 网点
+    iccardInformationSql = "SELECT id,card_no,ic_money,open_branch_name,open_card_time,open_operator_name," \
+                           "blacklist_f,valid_time,user_name,phone,papers_num FROM t_iccard WHERE 1=1"
+    paralist = []
+    if cardNum.text().strip() != '':
+        iccardInformationSql = iccardInformationSql+" and card_no='%s'"
+        paralist.append(cardNum.text())
+    if userName.text().strip() != '':
+        iccardInformationSql = iccardInformationSql+" and user_name='%s'"
+        paralist.append(userName.text())
+    if phone.text().strip() != '':
+        iccardInformationSql = iccardInformationSql+" and phone='%s'"
+        paralist.append(phone.text())
+    if idNum.text().strip() != '':
+        iccardInformationSql = iccardInformationSql+" and papers_num='%s'"
+        paralist.append(idNum.text())
+    if branch.currentText().strip() != '':
+        iccardInformationSql = iccardInformationSql+" and open_branch_name='%s'"
+        paralist.append(branch.text())
+    if len(paralist) > 1:
+        iccardInformationSql = iccardInformationSql % tuple(paralist)
+    elif len(paralist) > 0:
+        iccardInformationSql = iccardInformationSql % paralist[0]
+    iccardInformationSqlResult = DButil.conn_excu_sql(iccardInformationSql)
+    table = self.form3.findChild(QTableWidget, 'tableWidget')
+    rows = iccardInformationSqlResult.fetchall()
+    row = iccardInformationSqlResult.rowcount  # 取得记录个数，用于设置表格的行数
+    if row < 1:
+        table.clearContents()
+        return
+    vol = len(rows[0])  # 取得字段数，用于设置表格的列数
+    table.setRowCount(row)
+    table.setColumnCount(vol)
+    # table = QtWidgets.QTableWidget
+    # 初始化加载页面时表格内容不可修改
+    table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+    for i in range(row):
+        for j in range(vol):
+            temp_data = rows[i][j]  # 临时记录，不能直接插入表格
+            if temp_data is None:
+                temp_data = ""
+            data = QTableWidgetItem(str(temp_data))  # 转换后可插入表格
+            table.setItem(i, j, data)
